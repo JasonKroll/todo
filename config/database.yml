@@ -15,7 +15,7 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV["POSTGRESQL_MAX_CONNECTIONS"] || 5 %>
-  database: <%= ENV["POSTGRESQL_DATABASE"] || ENV['PG_ENV_POSTGRES_DATABASE'] %>
+  database: <%= ENV["POSTGRESQL_DATABASE"] || postgres %>
   username: <%= user || ENV['PG_ENV_POSTGRES_USER'] %>
   password: <%= password || ENV['PG_ENV_POSTGRES_PASSWORD'] %>
   host:     <%= ENV["#{db_service}_SERVICE_HOST"] || ENV['PG_PORT_5432_TCP_ADDR'] %>
