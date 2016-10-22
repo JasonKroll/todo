@@ -4,27 +4,43 @@
 #   Ensure the SQLite 3 gem is defined in your Gemfile
 #   gem 'sqlite3'
 #
+
+<% user = ENV.key?("POSTGRESQL_ADMIN_PASSWORD") ? "root" : ENV["POSTGRESQL_USER"] %>
+<% password = ENV.key?("POSTGRESQL_ADMIN_PASSWORD") ? ENV["POSTGRESQL_ADMIN_PASSWORD"] : ENV["POSTGRESQL_PASSWORD"] %>
+<% db_service = ENV.fetch("DATABASE_SERVICE_NAME","").upcase %>
+
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV["POSTGRESQL_MAX_CONNECTIONS"] || 5 %>
+  database: <%= ENV["POSTGRESQL_DATABASE"] || ENV['POSTGRESQL_DATABASE'] %>
+  username: <%= user || ENV['PG_ENV_POSTGRES_USER'] %>
+  password: <%= password || ENV['PG_ENV_POSTGRES_PASSWORD'] %>
+  host:     <%= ENV["#{db_service}_SERVICE_HOST"] || ENV['PG_PORT_5432_TCP_ADDR'] %>
+  port:     <%= ENV["#{db_service}_SERVICE_PORT"] || ENV['PG_PORT_5432_TCP_ADDR'] %>
+
+
 default: &default
   adapter: sqlite3
   pool: 5
   timeout: 5000
 
 development:
-  <<: *default
+  adapter: sqlite3
   database: db/development.sqlite3
+  pool: 5
+  timeout: 5000
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
-  <<: *default
+  adapter: sqlite3
   database: db/test.sqlite3
+  pool: 5
+  timeout: 5000
 
 production:
   <<: *default
-  adapter: postgresql
-  encoding: unicode
-  database: <%= ENV['POSTGRESQL_DATABASE'] || "todo_production" %>
-  username: <%= ENV['PG_ENV_POSTGRES_USER'] %>
-  password: <%= ENV['PG_ENV_POSTGRES_PASSWORD'] %>
-  host:     <%= ENV['PG_PORT_5432_TCP_ADDR'] %>
