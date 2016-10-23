@@ -18,7 +18,7 @@ default: &default
   database: <%= ENV["POSTGRESQL_DATABASE"] || 'postgres' %>
   username: <%= user || ENV['PG_ENV_POSTGRES_USER'] %>
   password: <%= password || ENV['PG_ENV_POSTGRES_PASSWORD'] %>
-  host:     <%= ENV['PG_PORT_5432_TCP_ADDR'] %>
+  host:     <%= ENV["#{db_service}_SERVICE_HOST"] || ENV['PG_PORT_5432_TCP_ADDR'] %>
   # port:     <%= ENV["#{db_service}_SERVICE_PORT"] || ENV['PG_PORT_5432_TCP_ADDR'] %>
 
 
