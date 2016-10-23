@@ -22,11 +22,6 @@ default: &default
   port:     <%= ENV["#{db_service}_SERVICE_PORT"] || ENV['PG_PORT_5432_TCP_ADDR'] %>
 
 
-default: &default
-  adapter: sqlite3
-  pool: 5
-  timeout: 5000
-
 development:
   adapter: sqlite3
   database: db/development.sqlite3
